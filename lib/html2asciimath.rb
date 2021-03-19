@@ -2,7 +2,7 @@
 
 require_relative "html2asciimath/version"
 
-module Html2asciimath
+module HTML2AsciiMath
   class Error < StandardError; end
   # Your code goes here...
 end

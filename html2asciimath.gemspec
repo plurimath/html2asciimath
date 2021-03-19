@@ -4,7 +4,7 @@ require_relative "lib/html2asciimath/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "html2asciimath"
-  spec.version       = Html2asciimath::VERSION
+  spec.version       = HTML2AsciiMath::VERSION
   spec.authors       = ["Ribose"]
   spec.email         = ["open.source@ribose.com"]
   spec.license       = "MIT"
