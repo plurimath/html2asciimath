@@ -1,0 +1,44 @@
+inherit_from:
+  - https://raw.githubusercontent.com/riboseinc/oss-guides/master/ci/rubocop.yml
+
+# local repo-specific modifications
+# ...
+
+AllCops:
+  TargetRubyVersion: 2.6
+
+# I prefer this way, especially in specs.
+Layout/ArgumentAlignment:
+  EnforcedStyle: with_fixed_indentation
+
+Layout/CaseIndentation:
+  EnforcedStyle: end
+
+Layout/EndAlignment:
+  EnforcedStyleAlignWith: variable
+
+Layout/FirstArrayElementIndentation:
+  EnforcedStyle: consistent
+
+Layout/SpaceAroundOperators:
+  EnforcedStyleForExponentOperator: space
+
+# This one breaks plenty of RSpec idioms.
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - "spec/**/*"
+
+# Obviously this is not a Rails application.
+Rails:
+  Enabled: false
+
+# Cause this enforcement is stupid…
+# https://rubystyle.guide/#map-find-select-reduce-include-size
+Style/CollectionMethods:
+  Enabled: false
+
+# Hashrocket style looks better when describing task dependencies.
+Style/HashSyntax:
+  Exclude:
+    - Rakefile
+    - "**/*.rake"
