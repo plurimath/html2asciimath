@@ -6,6 +6,8 @@ source "https://rubygems.org"
 gemspec
 
 gem "codecov", require: false
+gem "pry", "~> 0.14"
+gem "pry-doc"
 gem "rake", "~> 13.0"
 gem "rspec", "~> 3.0"
 gem "simplecov", "~> 0.21", require: false
