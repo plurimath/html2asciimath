@@ -15,8 +15,7 @@ module HTML2AsciiMath
 
     def scan_input
       repeat_until_error_or_eos do
-        scan_entity
-        scan_error
+        scan_entity or scan_number or scan_error
       end
     end
 
@@ -42,6 +41,12 @@ module HTML2AsciiMath
         unscan
         false
       end
+    end
+
+    def scan_number
+      number = scan(/\d+/) or return # TODO non-integers
+      # TODO accept number
+      true
     end
 
     def allowed_entity?(ent_name)
