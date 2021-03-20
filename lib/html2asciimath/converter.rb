@@ -15,7 +15,7 @@ module HTML2AsciiMath
 
     def scan_input
       repeat_until_error_or_eos do
-        scan_entity or scan_number or scan_error
+        skip_ws or scan_entity or scan_number or scan_error
       end
     end
 
@@ -27,6 +27,10 @@ module HTML2AsciiMath
 
     def scan_error
       throw :error
+    end
+
+    def skip_ws
+      skip(/\s+/)
     end
 
     def scan_entity
