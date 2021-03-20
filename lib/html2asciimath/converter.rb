@@ -15,7 +15,8 @@ module HTML2AsciiMath
 
     def scan_input
       repeat_until_error_or_eos do
-        skip_ws or scan_entity or scan_number or scan_symbol or scan_error
+        skip_ws or scan_entity or scan_number or scan_symbol or scan_text or
+          scan_error
       end
     end
 
@@ -50,6 +51,14 @@ module HTML2AsciiMath
     def scan_number
       number = scan(/\d+/) or return # TODO non-integers
       # TODO accept number
+      true
+    end
+
+    def scan_text
+      text = scan(/\w+/) or return
+      # TODO distinguish variables (which should be left unquoted), regular
+      # text (which should be quoted), and textual operators (e.g. sum).
+      # TODO accept text
       true
     end
 
