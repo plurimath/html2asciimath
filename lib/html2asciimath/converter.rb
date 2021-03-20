@@ -15,7 +15,7 @@ module HTML2AsciiMath
 
     def scan_input
       repeat_until_error_or_eos do
-        skip_ws or scan_entity or scan_number or scan_error
+        skip_ws or scan_entity or scan_number or scan_symbol or scan_error
       end
     end
 
@@ -50,6 +50,15 @@ module HTML2AsciiMath
     def scan_number
       number = scan(/\d+/) or return # TODO non-integers
       # TODO accept number
+      true
+    end
+
+    def scan_symbol
+      # TODO Perhaps brackets should be handled separately
+      symb = scan(%r{[-+⋅/=()%!]}) or return
+      symb = "//" if symb == "/"
+      symb = "*" if symb == "⋅"
+      # TODO accept symb
       true
     end
 
