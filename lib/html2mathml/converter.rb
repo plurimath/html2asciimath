@@ -8,11 +8,12 @@ require "nokogiri"
 
 module HTML2MathML
   class Converter < StringScanner
-    attr_reader :ast, :string, :html_scanner, :html_text_scanner
+    attr_reader :ast, :ast_stack, :string, :html_scanner, :html_text_scanner
 
     def initialize(str)
       @string = str
       @ast = Array.new
+      @ast_stack = [@ast]
       @html_scanner = Nokogiri::HTML::SAX::Parser.new(HTMLScannerCallbacks.new(self))
       @html_text_scanner = HTMLTextScanner.new(self)
     end
@@ -49,7 +50,15 @@ module HTML2MathML
       end
 
       def push_to_ast(label, value)
-        converter.ast << AstNode.new(label, value)
+        converter.ast_stack.last << AstNode.new(label, value)
+      end
+
+      def open_group
+        converter.ast_stack.push AST.new
+      end
+
+      def close_group
+        push_to_ast :group, converter.ast_stack.pop
       end
     end
 
