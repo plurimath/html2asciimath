@@ -12,6 +12,7 @@ module HTML2AsciiMath
       super
       @ast = AST.new
       @ast_stack = [@ast]
+      @variable_mode = false
     end
 
     def transform
@@ -79,7 +80,7 @@ module HTML2AsciiMath
       text = scan(/\w+/) or return
       # TODO distinguish variables (which should be left unquoted), regular
       # text (which should be quoted), and textual operators (e.g. sum).
-      push(text)
+      push(@variable_mode ? text : %["#{text}"])
       true
     end
 
@@ -116,6 +117,10 @@ module HTML2AsciiMath
 
     def allowed_entity?(ent_name)
       ALLOWED_ENTITIES.include?(ent_name) ? ent_name : nil
+    end
+
+    def on_i(opening)
+      @variable_mode = opening
     end
 
     def on_sub(opening)
