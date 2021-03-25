@@ -148,6 +148,7 @@ module HTML2AsciiMath
     # @todo Perhaps brackets should be handled separately.
     SYMBOLS = {
       "-" => nil,
+      "\u2013" => "-",
       "+" => nil,
       "/" => "//",
       "\u22c5" => "*", # (dot operator)
@@ -156,6 +157,9 @@ module HTML2AsciiMath
       ")" => nil,
       "%" => nil,
       "!" => nil,
+      ";" => nil,
+      "," => nil,
+      "..." => nil,
     }
     .freeze
 
