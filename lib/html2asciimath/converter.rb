@@ -22,7 +22,7 @@ module HTML2AsciiMath
 
     private
 
-    def scan_input
+    def scan_input # rubocop:disable Metrics/CyclomaticComplexity
       repeat_until_error_or_eos do
         skip_ws or scan_entity or scan_number or scan_element or scan_symbol or
           scan_text or scan_error
