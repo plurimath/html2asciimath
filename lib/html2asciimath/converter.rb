@@ -71,7 +71,7 @@ module HTML2AsciiMath
     end
 
     def scan_number
-      number = scan(/\d+(?:\.\d+)?/) or return
+      number = scan(/\d+(?:[.,]\d+)?/) or return
       push(number)
       true
     end
