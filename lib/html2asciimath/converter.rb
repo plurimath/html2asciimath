@@ -118,6 +118,24 @@ module HTML2AsciiMath
       ALLOWED_ENTITIES.include?(ent_name) ? ent_name : nil
     end
 
+    def on_sub(opening)
+      if opening
+        push "_"
+        open_group
+      else
+        close_group
+      end
+    end
+
+    def on_sup(opening)
+      if opening
+        push "^"
+        open_group
+      else
+        close_group
+      end
+    end
+
     def to_asciimath
       ast.to_asciimath
     end
