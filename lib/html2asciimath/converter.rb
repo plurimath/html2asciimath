@@ -6,6 +6,13 @@ require "strscan"
 
 module HTML2AsciiMath
   class Converter < StringScanner
+    attr_reader :ast
+
+    def initialize(str)
+      super
+      @ast = AST.new
+    end
+
     def transform
       scan_input
       to_asciimath
@@ -53,7 +60,7 @@ module HTML2AsciiMath
 
       if allowed_entity?(ent_name)
         symbol = ENTITY_TRANSLATIONS[ent_name] || ent_name
-        # TODO accept symbol
+        push(symbol)
         true
       else
         unscan
@@ -63,7 +70,7 @@ module HTML2AsciiMath
 
     def scan_number
       number = scan(/\d+/) or return # TODO non-integers
-      # TODO accept number
+      push(number)
       true
     end
 
@@ -71,7 +78,7 @@ module HTML2AsciiMath
       text = scan(/\w+/) or return
       # TODO distinguish variables (which should be left unquoted), regular
       # text (which should be quoted), and textual operators (e.g. sum).
-      # TODO accept text
+      push(text)
       true
     end
 
@@ -80,7 +87,7 @@ module HTML2AsciiMath
       symb = scan(%r{[-+⋅/=()%!]}) or return
       symb = "//" if symb == "/"
       symb = "*" if symb == "⋅"
-      # TODO accept symb
+      push(symb)
       true
     end
 
@@ -94,12 +101,16 @@ module HTML2AsciiMath
       send(ELEMENT_HANDLERS[elem_name], false)
     end
 
+    def push(*objs)
+      ast.push(*objs)
+    end
+
     def allowed_entity?(ent_name)
       ALLOWED_ENTITIES.include?(ent_name) ? ent_name : nil
     end
 
     def to_asciimath
-      return "Converted expression" # TODO
+      ast.to_asciimath
     end
 
     GREEK_ALPHABET = %w[
