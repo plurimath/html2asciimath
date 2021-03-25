@@ -6,11 +6,12 @@ require "strscan"
 
 module HTML2AsciiMath
   class Converter < StringScanner
-    attr_reader :ast
+    attr_reader :ast, :ast_stack
 
     def initialize(str)
       super
       @ast = AST.new
+      @ast_stack = [@ast]
     end
 
     def transform
@@ -101,8 +102,16 @@ module HTML2AsciiMath
       send(ELEMENT_HANDLERS[elem_name], false)
     end
 
+    def open_group
+      ast_stack.push AST.new
+    end
+
+    def close_group
+      push ast_stack.pop
+    end
+
     def push(*objs)
-      ast.push(*objs)
+      ast_stack.last.push(*objs)
     end
 
     def allowed_entity?(ent_name)
