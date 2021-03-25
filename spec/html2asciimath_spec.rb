@@ -52,6 +52,14 @@ RSpec.describe HTML2AsciiMath do
     example "<i>a</i><i>b</i>" do
       expect(translate).to eq("a b")
     end
+
+    example "<i>α</i>" do
+      expect(translate).to eq("α")
+    end
+
+    example "<i>Ж</i>" do
+      expect(translate).to eq("Ж")
+    end
   end
 
   describe "basic operators" do
@@ -251,6 +259,14 @@ RSpec.describe HTML2AsciiMath do
 
     example "<i>f</i><sub>max</sub>" do
       expect(translate).to eq('f _ "max"')
+    end
+
+    example "αβγ" do
+      expect(translate).to eq('"αβγ"')
+    end
+
+    example "абг" do
+      expect(translate).to eq('"абг"')
     end
   end
 

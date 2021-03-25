@@ -77,7 +77,7 @@ module HTML2AsciiMath
     end
 
     def scan_text
-      text = scan(/\w+/) or return
+      text = scan(/\p{Letter}+/) or return
       # TODO distinguish variables (which should be left unquoted), regular
       # text (which should be quoted), and textual operators (e.g. sum).
       push(@variable_mode ? text : %["#{text}"])
