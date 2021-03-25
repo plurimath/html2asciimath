@@ -3,6 +3,7 @@
 # (c) 2021 Ribose Inc.
 
 require_relative "html2asciimath/version"
+require_relative "html2asciimath/ast"
 require_relative "html2asciimath/converter"
 
 module HTML2AsciiMath
