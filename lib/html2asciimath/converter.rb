@@ -174,6 +174,7 @@ module HTML2AsciiMath
       "le" => "<=",
       "gt" => ">",
       "ge" => ">=",
+      "middot" => "*",
       "sdot" => "*",
       "times" => "xx",
       "divide" => "-:",

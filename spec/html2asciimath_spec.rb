@@ -85,6 +85,10 @@ RSpec.describe HTML2AsciiMath do
       expect(translate).to eq("1 * 2")
     end
 
+    example "1 &middot; 2" do
+      expect(translate).to eq("1 * 2")
+    end
+
     example "1 &times; 2" do
       expect(translate).to eq("1 xx 2")
     end
