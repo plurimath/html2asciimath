@@ -297,7 +297,6 @@ RSpec.describe HTML2AsciiMath do
   # Real-life examples from Electropedia
 
   example "<i>a</i><i>ℛ</i><i>b</i>" do
-    pending "support ℛ"
     expect(translate).to eq("a ℛ b")
   end
 
@@ -306,12 +305,10 @@ RSpec.describe HTML2AsciiMath do
   end
 
   example "<i>n</i> = <i>I</i>&middot;<i>t</i>/<i>F</i>" do # 112-01-31
-    pending "support middot"
     expect(translate).to eq("n = I * t // F")
   end
 
   example "<i>f</i>(<i>Q</i><sub>1</sub>, <i>Q</i><sub>2</sub>, ... <i>Q<sub>n</sub></i>) = 0" do # 112-01-31
-    pending "support , and ..."
     expect(translate).to eq("f ( Q _ 1 , Q _ 2 , ... Q _ n ) = 0")
   end
 
@@ -321,7 +318,6 @@ RSpec.describe HTML2AsciiMath do
   end
 
   example "(<i>F</i><sub><i>x</i></sub>; <i>F</i><sub><i>y</i></sub>; <i>F</i><sub><i>z</i></sub>) = (–31,5; 43,2; 17,0) N" do # 112-01-28
-    pending "support ;"
     expect(translate).to eq('( F _ x ; F _ y ; F _ z ) = ( - 31,5 ; 43,2 ; 17,0 ) "N"')
   end
 
