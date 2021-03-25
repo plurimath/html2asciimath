@@ -15,8 +15,8 @@ module HTML2AsciiMath
 
     def scan_input
       repeat_until_error_or_eos do
-        skip_ws or scan_entity or scan_number or scan_symbol or scan_text or
-          scan_error
+        skip_ws or scan_entity or scan_number or scan_element or scan_symbol or
+          scan_text or scan_error
       end
     end
 
@@ -32,6 +32,19 @@ module HTML2AsciiMath
 
     def skip_ws
       skip(/\s+/)
+    end
+
+    def scan_element
+      str = scan(%r{</?\w+>}) or return
+      opening = str[1] != "/"
+      elem_name = opening ? str[1..-2] : str[2..-2]
+
+      # TODO else unscan and return false
+      if ELEMENT_HANDLERS.key? elem_name
+        opening ? open_element(elem_name) : close_element(elem_name)
+      end
+
+      true
     end
 
     def scan_entity
@@ -71,6 +84,16 @@ module HTML2AsciiMath
       true
     end
 
+    def open_element(elem_name)
+      # TODO maintain some elements stack
+      send(ELEMENT_HANDLERS[elem_name], true)
+    end
+
+    def close_element(elem_name)
+      # TODO auto-close elements which are above this one in elements stack
+      send(ELEMENT_HANDLERS[elem_name], false)
+    end
+
     def allowed_entity?(ent_name)
       ALLOWED_ENTITIES.include?(ent_name) ? ent_name : nil
     end
@@ -105,5 +128,14 @@ module HTML2AsciiMath
       *ENTITY_TRANSLATIONS.keys,
       "not",
     ].to_set.freeze
+
+    # Associates element names with element handlers.
+    #
+    # Example: <code>{ "some_tag_name" => :on_some_tag_name }</code>
+    ELEMENT_HANDLERS = (instance_methods + private_instance_methods)
+      .grep(/\Aon_/)
+      .map { |h| [h.to_s[3..].freeze, h] }
+      .to_h
+      .freeze
   end
 end
