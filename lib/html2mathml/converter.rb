@@ -92,6 +92,24 @@ module HTML2MathML
       def on_i(opening)
         @variable_mode = opening
       end
+
+      def on_sub(opening)
+        if opening
+          # push "_"
+          open_group
+        else
+          close_group
+        end
+      end
+
+      def on_sup(opening)
+        if opening
+          # push "^"
+          open_group
+        else
+          close_group
+        end
+      end
     end
 
     class HTMLTextScanner < AbstractScanner
