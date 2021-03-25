@@ -292,18 +292,59 @@ RSpec.describe HTML2AsciiMath do
 
   # Real-life examples from Electropedia
 
-  pending "<i>a</i><i>ℛ</i><i>b</i>"
-  pending "<i>T</i> = (1/2) <i>m</i><i>v</i><sup>2</sup>"
-  pending "<i>n</i> = <i>I</i>&middot;<i>t</i>/<i>F</i>"
-  pending "<i>f</i>(<i>Q</i><sub>1</sub>, <i>Q</i><sub>2</sub>, ... <i>Q<sub>n</sub></i>) = 0" # 112-01-31
-  pending "{<i>Q</i>}[[<i>Q</i>]]" # 112-01-28
-  pending "(<i>F</i><sub><i>x</i></sub>; <i>F</i><sub><i>y</i></sub>; <i>F</i><sub><i>z</i></sub>) = (–31,5; 43,2; 17,0) N" # 112-01-28
-  pending "dim(refractive index <i>n</i> = <i>c</i><sub>0</sub>/<i>c</i>) = (LT<sup>–1</sup>)<sup>0</sup>" # 112-01-13
-  pending "H(<i>x</i>)" # 103-03-01
-  pending "(<b><i>U</i></b><sup>H</sup><b><i>AU</i></b>)<sub>11</sub> &gt; 0" # 102-06-29
-  pending "<b><i>U</i></b><sup>H</sup><b><i>AU</i></b>" # 102-06-29
-  pending "<b><i>AA</i></b><sup>&minus;1</sup> = <b><i>A</i></b><sup>&minus;1</sup><b><i>A</i></b> = <b><i>E</i></b>" # 102-06-16
-  pending "<b><i>A</i></b><sup>&minus;1</sup> = (<i>A<sub>ij</i></sub>)<sup>&minus;1</sup>" # 102-06-16
+  example "<i>a</i><i>ℛ</i><i>b</i>" do
+    pending "support ℛ"
+    expect(translate).to eq("a ℛ b")
+  end
+
+  example "<i>T</i> = (1/2) <i>m</i><i>v</i><sup>2</sup>" do # 112-01-31
+    expect(translate).to eq("T = ( 1 // 2 ) m v ^ 2")
+  end
+
+  example "<i>n</i> = <i>I</i>&middot;<i>t</i>/<i>F</i>" do # 112-01-31
+    pending "support middot"
+    expect(translate).to eq("n = I * t // F")
+  end
+
+  example "<i>f</i>(<i>Q</i><sub>1</sub>, <i>Q</i><sub>2</sub>, ... <i>Q<sub>n</sub></i>) = 0" do # 112-01-31
+    pending "support , and ..."
+    expect(translate).to eq("f ( Q _ 1 , Q _ 2 , ... Q _ n ) = 0")
+  end
+
+  example "{<i>Q</i>}[[<i>Q</i>]]" do # 112-01-28
+    pending "support [[ ]]"
+    expect(translate).to eq("{ Q } [[ Q ]]")
+  end
+
+  example "(<i>F</i><sub><i>x</i></sub>; <i>F</i><sub><i>y</i></sub>; <i>F</i><sub><i>z</i></sub>) = (–31,5; 43,2; 17,0) N" do # 112-01-28
+    pending "support ;"
+    expect(translate).to eq('( F _ x ; F _ y ; F _ z ) = ( - 31,5 ; 43,2 ; 17,0 ) "N"')
+  end
+
+  example "dim(refractive index <i>n</i> = <i>c</i><sub>0</sub>/<i>c</i>) = (LT<sup>–1</sup>)<sup>0</sup>" do # 112-01-13
+    pending "support multi-word texts"
+    expect(translate).to eq('"dim" ( "refractive index" n = c _ 0 // c ) = ( "LT" _ -1 ) ^ 0')
+  end
+
+  example "H(<i>x</i>)" do # 103-03-01
+    expect(translate).to eq('"H" ( x )')
+  end
+
+  example "(<b><i>U</i></b><sup>H</sup><b><i>AU</i></b>)<sub>11</sub> &gt; 0" do # 102-06-29
+    skip "how to handle <b>?"
+  end
+
+  example "<b><i>U</i></b><sup>H</sup><b><i>AU</i></b>" do # 102-06-29
+    skip "how to handle <b>?"
+  end
+
+  example "<b><i>AA</i></b><sup>&minus;1</sup> = <b><i>A</i></b><sup>&minus;1</sup><b><i>A</i></b> = <b><i>E</i></b>" do # 102-06-16
+    skip "how to handle <b>?"
+  end
+
+  example "<b><i>A</i></b><sup>&minus;1</sup> = (<i>A<sub>ij</i></sub>)<sup>&minus;1</sup>" do # 102-06-16
+    skip "how to handle <b>?"
+  end
 
   # Runs described_class#convert on given HTML math string
   def translate(src = RSpec.current_example.description)
