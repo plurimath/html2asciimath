@@ -85,10 +85,8 @@ module HTML2AsciiMath
     end
 
     def scan_symbol
-      # TODO Perhaps brackets should be handled separately
-      symb = scan(%r{[-+⋅/=()%!]}) or return
-      symb = "//" if symb == "/"
-      symb = "*" if symb == "⋅"
+      str = scan(SYMBOLS_RX) or return
+      symb = SYMBOLS[str] || str
       push(symb)
       true
     end
@@ -144,6 +142,26 @@ module HTML2AsciiMath
     def to_asciimath
       ast.to_asciimath
     end
+
+    # Left side is a HTML math symbol recognized by scanner.  Right side is its
+    # AsciiMath equivalent or nil when no translation is needed.
+    # @todo Perhaps brackets should be handled separately.
+    SYMBOLS = {
+      "-" => nil,
+      "+" => nil,
+      "/" => "//",
+      "\u22c5" => "*", # (dot operator)
+      "=" => nil,
+      "(" => nil,
+      ")" => nil,
+      "%" => nil,
+      "!" => nil,
+    }
+    .freeze
+
+    # A regular expression which matches every symbol defined in +SYMBOLS+ hash.
+    SYMBOLS_RX =
+      Regexp.new(SYMBOLS.keys.map { |k| Regexp.escape(k) }.join("|")).freeze
 
     GREEK_ALPHABET = %w[
       alpha beta gamma delta epsilon zeta eta theta iota kappa lambda mu nu xi
