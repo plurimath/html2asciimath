@@ -3,19 +3,19 @@
 require_relative "lib/html2asciimath/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "html2asciimath"
+  spec.name          = "html2mathml"
   spec.version       = HTML2AsciiMath::VERSION
   spec.authors       = ["Ribose"]
   spec.email         = ["open.source@ribose.com"]
   spec.license       = "MIT"
 
   spec.summary       = "Converts simple math formulae written in pure HTML " +
-    "to AsciiMath"
+    "to MathML"
 
   spec.homepage      = "https://www.plurimath.org/"
 
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "https://github.com/plurimath/html2asciimath"
+  spec.metadata["source_code_uri"] = "https://github.com/plurimath/html2mathml"
 
   all_files_in_git = Dir.chdir(File.expand_path(__dir__)) do
     `git ls-files -z`.split("\x0")
