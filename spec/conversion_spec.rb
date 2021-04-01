@@ -94,7 +94,7 @@ RSpec.describe "formula conversion" do
     end
 
     example "4!" do
-      expect(translate).to eq("<math>4 !</math>")
+      expect(translate).to eq("<math><mn>4</mn><mo>!</mo></math>")
     end
 
     example "<i>a</i> + <i>b</i>" do
