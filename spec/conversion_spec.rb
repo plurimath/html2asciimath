@@ -6,11 +6,11 @@
 RSpec.describe "formula conversion" do
   describe "Greek" do
     example "&omega;" do
-      expect(translate).to eq("<math>omega</math>")
+      expect(translate).to eq("<math><mi>&omega;</mi></math>")
     end
 
     example "&Omega;" do
-      expect(translate).to eq("<math>Omega</math>")
+      expect(translate).to eq("<math><mi>&Omega;</mi></math>")
     end
   end
 
