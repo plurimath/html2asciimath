@@ -62,7 +62,7 @@ RSpec.describe "formula conversion" do
     # (note that fractions cannot be represented in HTML math)
 
     example "1 + 2" do
-      expect(translate).to eq("<math>1 + 2</math>")
+      expect(translate).to eq("<math><mn>1</mn><mo>+</mo><mn>2</mn></math>")
     end
 
     example "&omega; + &theta;" do
@@ -70,23 +70,23 @@ RSpec.describe "formula conversion" do
     end
 
     example "1 - 2" do
-      expect(translate).to eq("<math>1 - 2</math>")
+      expect(translate).to eq("<math><mn>1</mn><mo>-</mo><mn>2</mn></math>")
     end
 
     example "1 ⋅ 2" do
-      expect(translate).to eq("<math>1 * 2</math>")
+      expect(translate).to eq("<math><mn>1</mn><mo>*</mo><mn>2</mn></math>")
     end
 
     example "1 &sdot; 2" do
-      expect(translate).to eq("<math>1 * 2</math>")
+      expect(translate).to eq("<math><mn>1</mn><mo>*</mo><mn>2</mn></math>")
     end
 
     example "1 &times; 2" do
-      expect(translate).to eq("<math>1 xx 2</math>")
+      expect(translate).to eq("<math><mn>1</mn><mo>xx</mo><mn>2</mn></math>")
     end
 
     example "1 / 2" do
-      expect(translate).to eq("<math>1 // 2</math>")
+      expect(translate).to eq("<math><mn>1</mn><mo>//</mo><mn>2</mn></math>")
     end
 
     example "1 &divide; 2" do
