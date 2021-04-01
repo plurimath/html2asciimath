@@ -4,7 +4,7 @@
 
 # rubocop:disable Layout/LineLength
 RSpec.describe "formula conversion" do
-  describe "Greek" do
+  xdescribe "Greek" do
     example "&omega;" do
       expect(translate).to eq("<math><mi>&omega;</mi></math>")
     end
