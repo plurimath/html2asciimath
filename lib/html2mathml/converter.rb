@@ -7,10 +7,11 @@ require "strscan"
 
 module HTML2MathML
   class Converter < StringScanner
-    attr_reader :string, :html_scanner, :html_text_scanner
+    attr_reader :ast, :string, :html_scanner, :html_text_scanner
 
     def initialize(str)
       @string = str
+      @ast = Array.new
       @html_scanner = HTMLScanner.new(self, str)
       @html_text_scanner = HTMLTextScanner.new(self)
     end
@@ -52,8 +53,16 @@ module HTML2MathML
       CGI.unescapeHTML(str) # TODO CGI handles only some entities
     end
 
+    def push_to_ast(label, value)
+      ast << AstNode.new(label, value)
+    end
+
     def to_math_ml
-      "Converted expression" # TODO
+      [
+        "<math>",
+        *ast.map(&:to_math_ml),
+        "</math>",
+      ].join
     end
 
     class AbstractScanner < StringScanner
