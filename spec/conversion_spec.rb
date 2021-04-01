@@ -260,21 +260,21 @@ RSpec.describe "formula conversion" do
 
   # Mixing it all together
 
-  example "<i>f</i><sup>-1</sup>(<i>x</x>)" do
+  xexample "<i>f</i><sup>-1</sup>(<i>x</x>)" do
     expect(translate).to eq("<math>f ^ ( - 1 ) ( x )</math>")
     pending "print unary minus without brackets"
     expect(translate).to eq("<math>f ^ -1 ( x )</math>")
   end
 
-  example "&Pi;<i>r</i><sup>2</sup>" do
+  xexample "&Pi;<i>r</i><sup>2</sup>" do
     expect(translate).to eq("<math>Pi r ^ 2</math>")
   end
 
-  example "<i>x</i><sup><i>a</i> + <i>b</i></sup> = <i>x</i><sup><i>a</i></sup> &sdot; <i>x</i><sup><i>b</i></sup>" do
+  xexample "<i>x</i><sup><i>a</i> + <i>b</i></sup> = <i>x</i><sup><i>a</i></sup> &sdot; <i>x</i><sup><i>b</i></sup>" do
     expect(translate).to eq("<math>x ^ ( a + b ) = x ^ a * x ^ b</math>")
   end
 
-  example "fib(<i>n</i>) = fib(<i>n</i> - 1) + fib(<i>n</i> - 2)" do
+  xexample "fib(<i>n</i>) = fib(<i>n</i> - 1) + fib(<i>n</i> - 2)" do
     expect(translate).to eq('"fib" ( n ) = "fib" ( n - 1 ) + "fib" ( n - 2 )')
   end
 
