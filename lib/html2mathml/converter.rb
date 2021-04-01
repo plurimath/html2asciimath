@@ -14,7 +14,29 @@ module HTML2MathML
     private
 
     def scan_input
+      repeat_until_error_or_eos do
+        scan_html_element or scan_html_text or scan_error
+      end
+    end
+
+    def repeat_until_error_or_eos
+      catch(:error) do
+        yield until eos?
+      end
+    end
+
+    def scan_html_element
+      str = scan(%r{</?\w+>}) or return
       # TODO
+    end
+
+    def scan_html_text
+      str = scan(/[^<]+/)
+      # TODO
+    end
+
+    def scan_error
+      throw :error
     end
 
     def to_math_ml
