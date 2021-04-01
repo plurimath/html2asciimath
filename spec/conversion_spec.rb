@@ -16,27 +16,27 @@ RSpec.describe "formula conversion" do
 
   describe "numbers" do
     example "1" do
-      expect(translate).to eq("<math>1</math>")
+      expect(translate).to eq("<math><mn>1</mn></math>")
     end
 
     example "123" do
-      expect(translate).to eq("<math>123</math>")
+      expect(translate).to eq("<math><mn>123</mn></math>")
     end
 
     example "-123" do
-      expect(translate).to eq("<math>- 123</math>")
+      expect(translate).to eq("<math><mn>- 123</mn></math>")
       pending "do not add spacing after unary minus"
-      expect(translate).to eq("<math>-123</math>")
+      expect(translate).to eq("<math><mn>-123</mn></math>")
     end
 
     example "1.23" do
-      expect(translate).to eq("<math>1.23</math>")
+      expect(translate).to eq("<math><mn>1.23</mn></math>")
     end
 
     example "-1.23" do
-      expect(translate).to eq("<math>- 1.23</math>")
+      expect(translate).to eq("<math><mn>- 1.23</mn></math>")
       pending "do not add spacing after unary minus"
-      expect(translate).to eq("<math>-1.23</math>")
+      expect(translate).to eq("<math><mn>-1.23</mn></math>")
     end
   end
 
