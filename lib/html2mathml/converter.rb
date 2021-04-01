@@ -6,6 +6,13 @@ require "strscan"
 
 module HTML2MathML
   class Converter < StringScanner
+    attr_reader :ast
+
+    def initialize(str)
+      super
+      @ast = Array.new
+    end
+
     def transform
       scan_input
       to_math_ml
@@ -33,8 +40,16 @@ module HTML2MathML
       throw :error
     end
 
+    def push(label, value)
+      ast << AstNode.new(label, value)
+    end
+
     def to_math_ml
-      return "Converted expression" # TODO
+      [
+        "<math>",
+        *ast.map(&:to_math_ml),
+        "</math>",
+      ].join
     end
   end
 end
