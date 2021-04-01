@@ -33,7 +33,7 @@ module HTML2MathML
     end
 
     def scan_next_token
-      scan_number
+      scan_number or scan_symbol
     end
 
     def scan_error
@@ -43,6 +43,12 @@ module HTML2MathML
     def scan_number
       number = scan(/\d+(?:\.\d+)?/) or return
       push :number, number
+      true
+    end
+
+    def scan_symbol
+      symb = scan(SYMBOLS_RX) or return
+      push :operator, symb
       true
     end
 
@@ -61,5 +67,21 @@ module HTML2MathML
         "</math>",
       ].join
     end
+
+    SYMBOLS = [
+      "-",
+      "+",
+      "/",
+      "\u22c5", # (dot operator)
+      "=",
+      "(",
+      ")",
+      "%",
+      "!",
+    ].freeze
+
+    # A regular expression which matches every symbol defined in +SYMBOLS+ hash.
+    SYMBOLS_RX =
+      Regexp.new(SYMBOLS.map { |k| Regexp.escape(k) }.join("|")).freeze
   end
 end
