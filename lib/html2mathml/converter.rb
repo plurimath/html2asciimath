@@ -31,7 +31,7 @@ module HTML2MathML
     end
 
     def scan_html_text
-      str = scan(/[^<]+/)
+      str = scan(/[^<]+/) or return
       # TODO
     end
 
