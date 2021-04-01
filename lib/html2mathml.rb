@@ -3,6 +3,7 @@
 # (c) 2021 Ribose Inc.
 
 require_relative "html2mathml/version"
+require_relative "html2mathml/ast"
 require_relative "html2mathml/converter"
 
 module HTML2MathML
