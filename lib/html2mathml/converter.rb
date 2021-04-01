@@ -42,7 +42,7 @@ module HTML2MathML
     end
 
     def decode_html(str)
-      CGI.unescapeHTML(str)
+      CGI.unescapeHTML(str) # TODO CGI handles only some entities
     end
 
     def to_math_ml
