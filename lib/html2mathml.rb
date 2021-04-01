@@ -2,10 +2,10 @@
 
 # (c) 2021 Ribose Inc.
 
-require_relative "html2asciimath/version"
-require_relative "html2asciimath/converter"
+require_relative "html2mathml/version"
+require_relative "html2mathml/converter"
 
-module HTML2AsciiMath
+module HTML2MathML
   class Error < StandardError; end
 
   def convert(input)

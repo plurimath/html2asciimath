@@ -4,7 +4,7 @@
 
 require "strscan"
 
-module HTML2AsciiMath
+module HTML2MathML
   class Converter < StringScanner
     def transform
       scan_input
