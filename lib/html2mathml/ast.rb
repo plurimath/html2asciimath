@@ -3,7 +3,10 @@
 # (c) 2021 Ribose Inc.
 
 module HTML2AsciiMath
-  # Abstract syntax tree implemented as array of arrays and other objects.
+  # Represents AST node.
+  #
+  # It subclasses Array, and child nodes (if any) are elements of the array.
+  # +label+ describes node semantics (identifier, number, operator, etc.).
   class AST < Array
     module Refinements
       refine Object do
