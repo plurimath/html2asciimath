@@ -2,6 +2,7 @@
 
 # (c) 2021 Ribose Inc.
 
+require "cgi"
 require "strscan"
 
 module HTML2MathML
@@ -32,11 +33,16 @@ module HTML2MathML
 
     def scan_html_text
       str = scan(/[^<]+/) or return
+      str = decode_html(str).strip
       # TODO
     end
 
     def scan_error
       throw :error
+    end
+
+    def decode_html(str)
+      CGI.unescapeHTML(str)
     end
 
     def to_math_ml
