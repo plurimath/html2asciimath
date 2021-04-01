@@ -33,11 +33,17 @@ module HTML2MathML
     end
 
     def scan_next_token
-      # TODO
+      scan_number
     end
 
     def scan_error
       throw :error
+    end
+
+    def scan_number
+      number = scan(/\d+(?:\.\d+)?/) or return
+      push :number, number
+      true
     end
 
     def skip_ws
