@@ -42,19 +42,19 @@ RSpec.describe "formula conversion" do
 
   describe "variables" do
     example "<i>a</i>" do
-      expect(translate).to eq("<math><mo>a</mo></math>")
+      expect(translate).to eq("<math><mi>a</mi></math>")
     end
 
     example "<i>a</i><i>b</i>" do
-      expect(translate).to eq("<math><mo>a</mo><mo>b</mo></math>")
+      expect(translate).to eq("<math><mi>a</mi><mi>b</mi></math>")
     end
 
     example "<i>α</i>" do
-      expect(translate).to eq("<math><mo>α</mo></math>")
+      expect(translate).to eq("<math><mi>α</mi></math>")
     end
 
     example "<i>Ж</i>" do
-      expect(translate).to eq("<math><mo>Ж</mo></math>")
+      expect(translate).to eq("<math><mi>Ж</mi></math>")
     end
   end
 
