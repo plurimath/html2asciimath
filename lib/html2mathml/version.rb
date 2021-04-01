@@ -2,6 +2,6 @@
 
 # (c) 2021 Ribose Inc.
 
-module HTML2AsciiMath
+module HTML2MathML
   VERSION = "0.1.0"
 end
