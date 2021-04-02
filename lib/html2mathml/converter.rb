@@ -13,12 +13,12 @@ module HTML2MathML
     def initialize(str)
       @string = str
       @ast = Array.new
-      @html_scanner = Nokogiri::HTML::SAX::Parser.new(HTMLScannerCallbacks.new)
+      @html_scanner = Nokogiri::HTML::SAX::Parser.new(HTMLScannerCallbacks.new(self))
       @html_text_scanner = HTMLTextScanner.new(self)
     end
 
     def transform
-      html_scanner.parse
+      html_scanner.parse(string)
       to_math_ml
     end
 
@@ -75,6 +75,13 @@ module HTML2MathML
     end
 
     class HTMLScannerCallbacks < Nokogiri::XML::SAX::Document
+      attr_reader :converter
+
+      def initialize(converter)
+        super()
+        @converter = converter
+      end
+
       def characters(str)
         converter.html_text_scanner.string = str
         converter.html_text_scanner.parse
