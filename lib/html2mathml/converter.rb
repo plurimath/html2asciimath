@@ -121,7 +121,7 @@ module HTML2MathML
 
       def scan_text
         text = scan(/[[:word:]]+|[[:space:]]+|[[:cntrl:]]+/) or return
-        text.strip!
+        text.strip! # TODO preserve spaces inside text
         push_to_ast :text, text unless text.empty?
         true
       end
