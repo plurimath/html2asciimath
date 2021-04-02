@@ -120,8 +120,8 @@ module HTML2MathML
       end
 
       def scan_text
-        text = scan(/[[:word:][:space:][:cntrl:]]+/) or return
-        text.strip!
+        text = scan(/[[:word:]]+|[[:space:]]+|[[:cntrl:]]+/) or return
+        # text.strip!
         push_to_ast :text, text unless text.empty?
         true
       end
