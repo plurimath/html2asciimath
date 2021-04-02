@@ -11,19 +11,13 @@ module HTML2MathML
 
     def initialize(str)
       @string = str
-      @html_scanner = HTMLScanner.new(str)
-      @html_text_scanner = HTMLTextScanner.new
+      @html_scanner = HTMLScanner.new(self, str)
+      @html_text_scanner = HTMLTextScanner.new(self)
     end
 
     def transform
-      # scan_input
-      to_math_ml
-    end
-
-    private
-
-    def parse
       html_scanner.parse
+      to_math_ml
     end
 
     # def scan_input
@@ -59,17 +53,17 @@ module HTML2MathML
     end
 
     def to_math_ml
-      parse
       "Converted expression" # TODO
     end
 
-    MATH_ITEM_RX = %r{
-      \G (?:
-
-      )
-    }xi
-
     class AbstractScanner < StringScanner
+      attr_reader :converter
+
+      def initialize(converter, string = nil)
+        super(string)
+        @converter = converter
+      end
+
       def repeat_until_error_or_eos
         catch(:error) do
           yield until eos?
