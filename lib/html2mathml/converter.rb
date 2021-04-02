@@ -4,6 +4,7 @@
 
 require "cgi"
 require "strscan"
+require "nokogiri"
 
 module HTML2MathML
   class Converter < StringScanner
@@ -73,31 +74,33 @@ module HTML2MathML
       end
     end
 
-    class HTMLScanner < AbstractScanner
-      def parse
-        repeat_until_error_or_eos do
-          scan_html_element or scan_html_text or scan_error
-        end
-      end
-
-      def scan_html_element
-        str = scan(%r{</?\w+>}) or return
-        # TODO
-      end
-
-      def scan_html_text
-        str = scan(/[^<]+/) or return
-        parse_html_text(str)
-      end
-
-      def parse_html_text(str)
-        converter.html_text_scanner.string = decode_html(str)
+    class HTMLScanner < Nokogiri::HTML::SAX::Document
+      def characters(str)
+        converter.html_text_scanner.string = str
         converter.html_text_scanner.parse
       end
+      # def parse
+      #   repeat_until_error_or_eos do
+      #     scan_html_element or scan_html_text or scan_error
+      #   end
+      # end
 
-      def decode_html(str)
-        CGI.unescapeHTML(str) # TODO CGI handles only some entities
-      end
+      # def scan_html_element
+      #   str = scan(%r{</?\w+>}) or return
+      #   # TODO
+      # end
+
+      # def scan_html_text
+      #   str = scan(/[^<]+/) or return
+      #   parse_html_text(str)
+      # end
+
+      # def parse_html_text(str)
+      # end
+
+      # def decode_html(str)
+      #   CGI.unescapeHTML(str) # TODO CGI handles only some entities
+      # end
     end
 
     class HTMLTextScanner < AbstractScanner
