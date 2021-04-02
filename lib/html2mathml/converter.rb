@@ -103,7 +103,7 @@ module HTML2MathML
     class HTMLTextScanner < AbstractScanner
       def parse
         repeat_until_error_or_eos do
-          scan_ws or scan_number or scan_operator or scan_text
+          scan_ws or scan_number or scan_operator or scan_text or scan_error
         end
       end
 
