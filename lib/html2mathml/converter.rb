@@ -78,26 +78,26 @@ module HTML2MathML
         repeat_until_error_or_eos do
           scan_html_element or scan_html_text or scan_error
         end
+      end
 
-        def scan_html_element
-          str = scan(%r{</?\w+>}) or return
-          # TODO
-        end
+      def scan_html_element
+        str = scan(%r{</?\w+>}) or return
+        # TODO
+      end
 
-        def scan_html_text
-          str = scan(/[^<]+/) or return
-          parse_html_text(str)
-        end
+      def scan_html_text
+        str = scan(/[^<]+/) or return
+        parse_html_text(str)
+      end
 
-        def parse_html_text(str)
-          decoded = decode_html(str)
-          parent.html_text_scanner.string = decoded
-          parent.html_text_scanner.parse
-        end
+      def parse_html_text(str)
+        decoded = decode_html(str)
+        parent.html_text_scanner.string = decoded
+        parent.html_text_scanner.parse
+      end
 
-        def decode_html(str)
-          CGI.unescapeHTML(str) # TODO CGI handles only some entities
-        end
+      def decode_html(str)
+        CGI.unescapeHTML(str) # TODO CGI handles only some entities
       end
     end
 
