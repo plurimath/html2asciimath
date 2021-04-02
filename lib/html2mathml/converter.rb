@@ -112,7 +112,9 @@ module HTML2MathML
       end
 
       def scan_number
-        false
+        number = scan(/\d+(?:\.\d+)?/) or return
+        converter.push_to_ast :number, number
+        true
       end
 
       def scan_operator
