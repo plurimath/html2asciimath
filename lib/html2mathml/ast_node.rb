@@ -36,11 +36,12 @@ module HTML2MathML
     end
 
     def wrap_in_tag(tag_name, content)
-      "<#{tag_name}>#{content}</#{tag_name}>"
+      "<#{tag_name}>#{escape_for_xml content}</#{tag_name}>"
     end
 
+    # From https://github.com/asciidoctor/asciimath/blob/3a4bbab7da/lib/asciimath/mathml.rb
     def escape_for_xml(str)
-      str.each_codepoint.inject("") do |acc, cp|
+      str.each_codepoint.inject(String.new) do |acc, cp|
         if cp == 38
           acc << "&amp;"
         elsif cp == 60
