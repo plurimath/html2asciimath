@@ -22,5 +22,17 @@ module HTML2MathML
     def to_math_ml
       send("to_math_ml_as_#{label}")
     end
+
+    def to_math_ml_as_number
+      wrap_in_tag("mn", value)
+    end
+
+    def to_math_ml_as_operator
+      wrap_in_tag("mo", value)
+    end
+
+    def wrap_in_tag(tag_name, content)
+      "<#{tag_name}>#{content}</#{tag_name}>"
+    end
   end
 end
