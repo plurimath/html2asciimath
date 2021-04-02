@@ -21,14 +21,7 @@ module HTML2MathML
       to_math_ml
     end
 
-    # def scan_input
-    #   repeat_until_error_or_eos do
-    #     scan_html_element or scan_html_text or scan_error
-    #   end
-    # end
-
-
-
+    # def parse_html
 
 
 
@@ -48,10 +41,6 @@ module HTML2MathML
 
     #   interpret_token(token) while token = text_scanner.scan(FORMULA_TOKEN_RX)
     # end
-
-    def decode_html(str)
-      CGI.unescapeHTML(str) # TODO CGI handles only some entities
-    end
 
     def push_to_ast(label, value)
       ast << AstNode.new(label, value)
@@ -85,7 +74,6 @@ module HTML2MathML
     end
 
     class HTMLScanner < AbstractScanner
-
       def parse
         repeat_until_error_or_eos do
           scan_html_element or scan_html_text or scan_error
@@ -98,7 +86,17 @@ module HTML2MathML
 
         def scan_html_text
           str = scan(/[^<]+/) or return
-          parent.parse_html_text(str)
+          parse_html_text(str)
+        end
+
+        def parse_html_text(str)
+          decoded = decode_html(str)
+          parent.html_text_scanner.string = decoded
+          parent.html_text_scanner.parse
+        end
+
+        def decode_html(str)
+          CGI.unescapeHTML(str) # TODO CGI handles only some entities
         end
       end
     end
@@ -108,6 +106,22 @@ module HTML2MathML
         repeat_until_error_or_eos do
           scan_ws or scan_number or scan_operator or scan_text
         end
+      end
+
+      def scan_ws
+        false
+      end
+
+      def scan_number
+        false
+      end
+
+      def scan_operator
+        false
+      end
+
+      def scan_text
+        false
       end
     end
   end
