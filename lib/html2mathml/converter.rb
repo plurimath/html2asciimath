@@ -13,7 +13,7 @@ module HTML2MathML
     def initialize(str)
       @string = str
       @ast = Array.new
-      @html_scanner = HTMLScanner.new(self, str)
+      @html_scanner = Nokogiri::HTML::SAX::Parser.new(HTMLScannerCallbacks.new)
       @html_text_scanner = HTMLTextScanner.new(self)
     end
 
@@ -74,7 +74,7 @@ module HTML2MathML
       end
     end
 
-    class HTMLScanner < Nokogiri::HTML::SAX::Document
+    class HTMLScannerCallbacks < Nokogiri::XML::SAX::Document
       def characters(str)
         converter.html_text_scanner.string = str
         converter.html_text_scanner.parse
