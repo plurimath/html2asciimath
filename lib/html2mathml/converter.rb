@@ -57,7 +57,7 @@ module HTML2MathML
     class AbstractScanner < StringScanner
       attr_reader :converter
 
-      def initialize(converter, string = nil)
+      def initialize(converter, string = "")
         super(string)
         @converter = converter
       end
