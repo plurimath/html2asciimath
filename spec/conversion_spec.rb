@@ -6,57 +6,57 @@
 RSpec.describe "formula conversion" do
   xdescribe "Greek" do
     example "&omega;" do
-      expect(translate).to eq("<math><mi>&omega;</mi></math>")
+      expect(translate).to produce_formula("omega")
     end
 
     example "&Omega;" do
-      expect(translate).to eq("<math><mi>&Omega;</mi></math>")
+      expect(translate).to produce_formula("Omega")
     end
   end
 
   describe "numbers" do
     example "1" do
-      expect(translate).to eq("<math><mn>1</mn></math>")
+      expect(translate).to produce_formula("1")
     end
 
     example "123" do
-      expect(translate).to eq("<math><mn>123</mn></math>")
+      expect(translate).to produce_formula("123")
     end
 
     example "-123" do
       pending "tmp"
-      expect(translate).to eq("<math><mn>- 123</mn></math>")
+      expect(translate).to produce_formula("- 123")
       pending "do not add spacing after unary minus"
-      expect(translate).to eq("<math><mn>-123</mn></math>")
+      expect(translate).to produce_formula("-123")
     end
 
     example "1.23" do
-      expect(translate).to eq("<math><mn>1.23</mn></math>")
+      expect(translate).to produce_formula("1.23")
     end
 
     example "-1.23" do
       pending "tmp"
-      expect(translate).to eq("<math><mn>- 1.23</mn></math>")
+      expect(translate).to produce_formula("- 1.23")
       pending "do not add spacing after unary minus"
-      expect(translate).to eq("<math><mn>-1.23</mn></math>")
+      expect(translate).to produce_formula("-1.23")
     end
   end
 
-  xdescribe "variables" do
+  describe "variables" do
     example "<i>a</i>" do
-      expect(translate).to eq("<math><mi>a</mi></math>")
+      expect(translate).to produce_formula("a")
     end
 
     example "<i>a</i><i>b</i>" do
-      expect(translate).to eq("<math><mi>a</mi><mi>b</mi></math>")
+      expect(translate).to produce_formula("a b")
     end
 
     example "<i>α</i>" do
-      expect(translate).to eq("<math><mi>α</mi></math>")
+      expect(translate).to produce_formula("α")
     end
 
     example "<i>Ж</i>" do
-      expect(translate).to eq("<math><mi>Ж</mi></math>")
+      expect(translate).to produce_formula("Ж")
     end
   end
 
@@ -64,220 +64,222 @@ RSpec.describe "formula conversion" do
     # (note that fractions cannot be represented in HTML math)
 
     example "1 + 2" do
-      expect(translate).to eq("<math><mn>1</mn><mo>+</mo><mn>2</mn></math>")
+      expect(translate).to produce_formula("1 + 2")
     end
 
     example "&omega; + &theta;" do
-      expect(translate).to eq("<math>omega + theta</math>")
+      expect(translate).to produce_formula("omega + theta")
     end
 
     example "1 - 2" do
-      expect(translate).to eq("<math><mn>1</mn><mo>-</mo><mn>2</mn></math>")
+      expect(translate).to produce_formula("1 - 2")
     end
 
     example "1 ⋅ 2" do
-      expect(translate).to eq("<math><mn>1</mn><mo>⋅</mo><mn>2</mn></math>")
+      expect(translate).to produce_formula("1 * 2")
     end
 
     example "1 &sdot; 2" do
-      expect(translate).to eq("<math><mn>1</mn><mo>&sdot;</mo><mn>2</mn></math>")
+      expect(translate).to produce_formula("1 * 2")
     end
 
     example "1 &times; 2" do
-      expect(translate).to eq("<math><mn>1</mn><mo>&times;</mo><mn>2</mn></math>")
+      expect(translate).to produce_formula("1 xx 2")
     end
 
     example "1 / 2" do
-      expect(translate).to eq("<math><mn>1</mn><mo>/</mo><mn>2</mn></math>")
+      expect(translate).to produce_formula("1 // 2")
     end
 
     example "1 &divide; 2" do
-      expect(translate).to eq("<math><mn>1</mn><mo>&divide;</mo><mn>2</mn></math>")
+      expect(translate).to produce_formula("1 -: 2")
     end
 
     example "4!" do
       expect(translate).to eq("<math><mn>4</mn><mo>!</mo></math>")
+      pending "probably bug in AsciiMath as it fails to recognize '!' operator"
+      expect(translate).to produce_formula("4 !")
     end
 
     example "<i>a</i> + <i>b</i>" do
-      expect(translate).to eq("<math>a + b</math>")
+      expect(translate).to produce_formula("a + b")
     end
 
     example "<i>a</i> - <i>b</i>" do
-      expect(translate).to eq("<math>a - b</math>")
+      expect(translate).to produce_formula("a - b")
     end
 
     example "<i>a</i> &sdot; <i>b</i>" do
-      expect(translate).to eq("<math>a * b</math>")
+      expect(translate).to produce_formula("a * b")
     end
 
     example "<i>a</i> / <i>b</i>" do
-      expect(translate).to eq("<math>a // b</math>")
+      expect(translate).to produce_formula("a // b")
     end
   end
 
   describe "logic" do
     example "&not;<i>p</i>" do
-      expect(translate).to eq("<math>not p</math>")
+      expect(translate).to produce_formula("not p")
     end
   end
 
   describe "other symbols" do
     example "30%" do
-      expect(translate).to eq("<math>30 %</math>")
+      expect(translate).to produce_formula("30 %")
     end
 
     example "&infin;" do
-      expect(translate).to eq("<math>oo</math>")
+      expect(translate).to produce_formula("oo")
     end
 
     example "&forall;<i>x</i>" do
-      expect(translate).to eq("<math>VV x</math>")
+      expect(translate).to produce_formula("AA x")
     end
 
     example "&exist;<i>x</i>" do
-      expect(translate).to eq("<math>EE x</math>")
+      expect(translate).to produce_formula("EE x")
     end
   end
 
   describe "equations and inequations" do
     example "<i>a</i> = 3" do
-      expect(translate).to eq("<math>a = 3</math>")
+      expect(translate).to produce_formula("a = 3")
     end
 
     example "1 + 2 = 3" do
-      expect(translate).to eq("<math>1 + 2 = 3</math>")
+      expect(translate).to produce_formula("1 + 2 = 3")
     end
 
     example "1 &ne; 2" do
-      expect(translate).to eq("<math>1 != 2</math>")
+      expect(translate).to produce_formula("1 != 2")
     end
 
     example "1 &lt; 2" do
-      expect(translate).to eq("<math>1 < 2</math>")
+      expect(translate).to produce_formula("1 < 2")
     end
 
     example "1 &le; 2" do
-      expect(translate).to eq("<math>1 <= 2</math>")
+      expect(translate).to produce_formula("1 <= 2")
     end
 
     example "3 &gt; 2" do
-      expect(translate).to eq("<math>3 > 2</math>")
+      expect(translate).to produce_formula("3 > 2")
     end
 
     example "3 &ge; 2" do
-      expect(translate).to eq("<math>3 >= 2</math>")
+      expect(translate).to produce_formula("3 >= 2")
     end
   end
 
   describe "subscript and superscript" do
     example "<i>a</i><sup>2</sup>" do
-      expect(translate).to eq("<math>a ^ 2</math>")
+      expect(translate).to produce_formula("a ^ 2")
     end
 
     example "<i>a</i><sub>2</sub>" do
-      expect(translate).to eq("<math>a _ 2</math>")
+      expect(translate).to produce_formula("a _ 2")
     end
 
     example "<i>a</i><sup><i>n</i></sup>" do
-      expect(translate).to eq("<math>a ^ n</math>")
+      expect(translate).to produce_formula("a ^ n")
     end
 
     example "<i>a</i><sub><i>n</i></sub>" do
-      expect(translate).to eq("<math>a _ n</math>")
+      expect(translate).to produce_formula("a _ n")
     end
 
     example "2<sup>3</sup>" do
-      expect(translate).to eq("<math>2 ^ 3</math>")
+      expect(translate).to produce_formula("2 ^ 3")
     end
 
     example "2<sup>3+4</sup>" do
-      expect(translate).to eq("<math>2 ^ ( 3 + 4 )</math>")
+      expect(translate).to produce_formula("2 ^ ( 3 + 4 )")
     end
 
     example "<i>a</i><sup><i>b</i>+2</sup>" do
-      expect(translate).to eq("<math>a ^ ( b + 2 )</math>")
+      expect(translate).to produce_formula("a ^ ( b + 2 )")
     end
 
     example "2<sub>3+4</sub>" do
-      expect(translate).to eq("<math>2 _ ( 3 + 4 )</math>")
+      expect(translate).to produce_formula("2 _ ( 3 + 4 )")
     end
 
     example "<i>a</i><sub><i>b</i>+2</sub>" do
-      expect(translate).to eq("<math>a _ ( b + 2 )</math>")
+      expect(translate).to produce_formula("a _ ( b + 2 )")
     end
 
     example "<i>a</i><sup>-2</sup>" do
-      expect(translate).to eq("<math>a ^ ( - 2 )</math>")
+      expect(translate).to produce_formula("a ^ ( - 2 )")
       pending "print unary minus without brackets"
-      expect(translate).to eq("<math>a ^ -2</math>")
+      expect(translate).to produce_formula("a ^ -2")
     end
 
     example "<i>a</i><sub>-2</sub>" do
-      expect(translate).to eq("<math>a _ ( - 2 )</math>")
+      expect(translate).to produce_formula("a _ ( - 2 )")
       pending "print unary minus without brackets"
-      expect(translate).to eq("<math>a _ -2</math>")
+      expect(translate).to produce_formula("a _ -2")
     end
 
     example "<i>a</i><sup>-<i>n</i></sup>" do
-      expect(translate).to eq("<math>a ^ ( - n )</math>")
+      expect(translate).to produce_formula("a ^ ( - n )")
       pending "print unary minus without brackets"
-      expect(translate).to eq("<math>a ^ -n</math>")
+      expect(translate).to produce_formula("a ^ -n")
     end
 
     example "<i>a</i><sub>-<i>n</i></sub>" do
-      expect(translate).to eq("<math>a _ ( - n )</math>")
+      expect(translate).to produce_formula("a _ ( - n )")
       pending "print unary minus without brackets"
-      expect(translate).to eq("<math>a _ -n</math>")
+      expect(translate).to produce_formula("a _ -n")
     end
 
     example "<i>a</i><sub><i>n</i></sub><sup>2</sup>" do
-      expect(translate).to eq("<math>a _ n ^ 2</math>")
+      expect(translate).to produce_formula("a _ n ^ 2")
     end
 
     example "<i>a</i><sub><i>n+1</i></sub><sup><i>b</i>+<i>c</i></sup>" do
-      expect(translate).to eq("<math>a _ ( n + 1 ) ^ ( b + c )</math>")
+      expect(translate).to produce_formula("a _ ( n + 1 ) ^ ( b + c )")
     end
   end
 
   describe "functions" do
     example "<i>f</i>(<i>x</x>)" do
-      expect(translate).to eq("<math>f ( x )</math>")
+      expect(translate).to produce_formula("f ( x )")
     end
 
     example "<i>f</i>(<i>g</i>(<i>x</x>))" do
-      expect(translate).to eq("<math>f ( g ( x ) )</math>")
+      expect(translate).to produce_formula("f ( g ( x ) )")
     end
   end
 
   describe "regular text" do
     example "fib(<i>n</i>)" do
-      expect(translate).to eq('"fib" ( n )')
+      expect(translate).to produce_formula('"fib" ( n )')
     end
 
     example "<i>f</i><sub>max</sub>" do
-      expect(translate).to eq('f _ "max"')
+      expect(translate).to produce_formula('f _ "max"')
     end
   end
 
   # Mixing it all together
 
   xexample "<i>f</i><sup>-1</sup>(<i>x</x>)" do
-    expect(translate).to eq("<math>f ^ ( - 1 ) ( x )</math>")
+    expect(translate).to produce_formula("f ^ ( - 1 ) ( x )")
     pending "print unary minus without brackets"
-    expect(translate).to eq("<math>f ^ -1 ( x )</math>")
+    expect(translate).to produce_formula("f ^ -1 ( x )")
   end
 
   xexample "&Pi;<i>r</i><sup>2</sup>" do
-    expect(translate).to eq("<math>Pi r ^ 2</math>")
+    expect(translate).to produce_formula("Pi r ^ 2")
   end
 
   xexample "<i>x</i><sup><i>a</i> + <i>b</i></sup> = <i>x</i><sup><i>a</i></sup> &sdot; <i>x</i><sup><i>b</i></sup>" do
-    expect(translate).to eq("<math>x ^ ( a + b ) = x ^ a * x ^ b</math>")
+    expect(translate).to produce_formula("x ^ ( a + b ) = x ^ a * x ^ b")
   end
 
   xexample "fib(<i>n</i>) = fib(<i>n</i> - 1) + fib(<i>n</i> - 2)" do
-    expect(translate).to eq('"fib" ( n ) = "fib" ( n - 1 ) + "fib" ( n - 2 )')
+    expect(translate).to produce_formula('"fib" ( n ) = "fib" ( n - 1 ) + "fib" ( n - 2 )')
   end
 
   # Real-life examples from Electropedia
@@ -298,6 +300,11 @@ RSpec.describe "formula conversion" do
   # Runs described_class#convert on given HTML math string
   def translate(src = RSpec.current_example.description)
     HTML2MathML.convert(src)
+  end
+
+  def produce_formula(expected)
+    mathml = AsciiMath.parse(expected).to_mathml
+    eq(mathml)
   end
 end
 # rubocop:enable Layout/LineLength
