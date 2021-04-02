@@ -91,9 +91,8 @@ module HTML2MathML
       end
 
       def parse_html_text(str)
-        decoded = decode_html(str)
-        parent.html_text_scanner.string = decoded
-        parent.html_text_scanner.parse
+        converter.html_text_scanner.string = decode_html(str)
+        converter.html_text_scanner.parse
       end
 
       def decode_html(str)
