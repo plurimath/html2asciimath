@@ -42,10 +42,6 @@ module HTML2MathML
     #   interpret_token(token) while token = text_scanner.scan(FORMULA_TOKEN_RX)
     # end
 
-    def push_to_ast(label, value)
-      ast << AstNode.new(label, value)
-    end
-
     def to_math_ml
       [
         "<math>",
@@ -70,6 +66,10 @@ module HTML2MathML
 
       def scan_error
         throw :error
+      end
+
+      def push_to_ast(label, value)
+        converter.ast << AstNode.new(label, value)
       end
     end
 
@@ -103,28 +103,27 @@ module HTML2MathML
     class HTMLTextScanner < AbstractScanner
       def parse
         repeat_until_error_or_eos do
-          scan_ws or scan_number or scan_text or scan_operator or scan_error
+          scan_number or scan_text or scan_operator or scan_error
         end
-      end
-
-      def scan_ws
-        false
       end
 
       def scan_number
         number = scan(/\d+(?:\.\d+)?/) or return
-        converter.push_to_ast :number, number
+        push_to_ast :number, number
         true
       end
 
       def scan_operator
         symb = scan(/./) or return
-        converter.push_to_ast :operator, symb
+        push_to_ast :operator, symb
         true
       end
 
       def scan_text
-        false
+        text = scan(/[[:word:][:space:][:cntrl:]]+/) or return
+        text.strip!
+        push_to_ast :text, text unless text.empty?
+        true
       end
     end
   end
