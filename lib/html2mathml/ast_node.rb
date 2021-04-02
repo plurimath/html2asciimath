@@ -23,6 +23,10 @@ module HTML2MathML
       send("to_math_ml_as_#{label}")
     end
 
+    def to_math_ml_as_identifier
+      wrap_in_tag("mi", value)
+    end
+
     def to_math_ml_as_number
       wrap_in_tag("mn", value)
     end

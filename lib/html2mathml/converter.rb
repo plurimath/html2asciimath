@@ -22,27 +22,6 @@ module HTML2MathML
       to_math_ml
     end
 
-    # def parse_html
-
-
-
-    # def parse_html_text(str)
-    #   str = decode_html(str)
-
-    #   while MATH_ITEM_RX =~ str
-
-    #   end
-
-    #   # TODO check if end
-
-    #   # str.scan(FORMULA_TOKEN_RX) do
-    #   # end
-    #   # text_scanner = StringScanner.new(decode_html(str))
-
-
-    #   interpret_token(token) while token = text_scanner.scan(FORMULA_TOKEN_RX)
-    # end
-
     def to_math_ml
       [
         "<math>",
@@ -80,37 +59,35 @@ module HTML2MathML
       def initialize(converter)
         super()
         @converter = converter
+        @variable_mode = false
       end
 
       def characters(str)
         converter.html_text_scanner.string = str
+        converter.html_text_scanner.variable_mode = @variable_mode
         converter.html_text_scanner.parse
       end
-      # def parse
-      #   repeat_until_error_or_eos do
-      #     scan_html_element or scan_html_text or scan_error
-      #   end
-      # end
 
-      # def scan_html_element
-      #   str = scan(%r{</?\w+>}) or return
-      #   # TODO
-      # end
+      def start_element name, attrs = []
+        handler = "on_#{name}"
+        send(handler, true) if respond_to?(handler, true)
+      end
 
-      # def scan_html_text
-      #   str = scan(/[^<]+/) or return
-      #   parse_html_text(str)
-      # end
+      def end_element name
+        handler = "on_#{name}"
+        send(handler, false) if respond_to?(handler, true)
+      end
 
-      # def parse_html_text(str)
-      # end
+      private
 
-      # def decode_html(str)
-      #   CGI.unescapeHTML(str) # TODO CGI handles only some entities
-      # end
+      def on_i(opening)
+        @variable_mode = opening
+      end
     end
 
     class HTMLTextScanner < AbstractScanner
+      attr_accessor :variable_mode
+
       def parse
         repeat_until_error_or_eos do
           scan_number or scan_text or scan_operator or scan_error
@@ -132,7 +109,7 @@ module HTML2MathML
       def scan_text
         text = scan(/[[:word:]]+|[[:space:]]+|[[:cntrl:]]+/) or return
         text.strip! # TODO preserve spaces inside text
-        push_to_ast :text, text unless text.empty?
+        push_to_ast(variable_mode ? :identifier : :text, text) unless text.empty?
         true
       end
     end
