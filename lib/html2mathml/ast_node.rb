@@ -38,5 +38,21 @@ module HTML2MathML
     def wrap_in_tag(tag_name, content)
       "<#{tag_name}>#{content}</#{tag_name}>"
     end
+
+    def escape_for_xml(str)
+      str.each_codepoint.inject("") do |acc, cp|
+        if cp == 38
+          acc << "&amp;"
+        elsif cp == 60
+          acc << "&lt;"
+        elsif cp == 62
+          acc << "&gt;"
+        elsif cp > 127
+          acc << "&#x#{cp.to_s(16).upcase};"
+        else
+          acc << cp
+        end
+      end
+    end
   end
 end
