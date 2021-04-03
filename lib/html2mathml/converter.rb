@@ -24,6 +24,8 @@ module HTML2MathML
     end
 
     def to_math_ml
+      require 'pry'
+      binding.pry
       [
         "<math>",
         ast.map(&:to_math_ml),

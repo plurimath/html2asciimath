@@ -175,7 +175,7 @@ RSpec.describe "formula conversion" do
   end
 
   describe "subscript and superscript" do
-    example "<i>a</i><sup>2</sup>" do
+    fexample "<i>a</i><sup>2</sup>" do
       expect(translate).to produce_formula("a ^ 2")
     end
 
