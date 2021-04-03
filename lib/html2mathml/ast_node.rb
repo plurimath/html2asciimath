@@ -35,6 +35,14 @@ module HTML2MathML
       wrap_in_tag("mo", value)
     end
 
+    def to_math_ml_as_subscript
+      wrap_in_tag("mtext", value)
+    end
+
+    def to_math_ml_as_superscript
+      wrap_in_tag("mtext", value)
+    end
+
     def to_math_ml_as_text
       wrap_in_tag("mtext", value)
     end
