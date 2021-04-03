@@ -26,9 +26,9 @@ module HTML2MathML
     def to_math_ml
       [
         "<math>",
-        *ast.map(&:to_math_ml),
+        ast.map(&:to_math_ml),
         "</math>",
-      ].join
+      ].flatten.join
     end
 
     def push_to_ast(label, value)
@@ -67,13 +67,13 @@ module HTML2MathML
         converter.push_to_ast(*args)
       end
 
-      # def open_group
-      #   converter.ast_stack.push AST.new
-      # end
+      def open_group
+        converter.ast_stack.push AST.new
+      end
 
-      # def close_group
-      #   push_to_ast :group, converter.ast_stack.pop
-      # end
+      def close_group
+        push_to_ast :group, converter.ast_stack.pop
+      end
     end
 
     class HTMLScannerCallbacks < Nokogiri::XML::SAX::Document

@@ -20,7 +20,10 @@ module HTML2MathML
     end
 
     def to_math_ml
-      send("to_math_ml_as_#{label}")
+
+      # else
+        send("to_math_ml_as_#{label}")
+      # end
     end
 
     def to_math_ml_as_identifier
@@ -36,11 +39,11 @@ module HTML2MathML
     end
 
     def to_math_ml_as_subscript
-      wrap_in_tag("mtext", value)
+      wrap_in_tag("msub", value)
     end
 
     def to_math_ml_as_superscript
-      wrap_in_tag("mtext", value)
+      wrap_in_tag("msup", value)
     end
 
     def to_math_ml_as_text
@@ -48,6 +51,8 @@ module HTML2MathML
     end
 
     def wrap_in_tag(tag_name, content)
+      content = content.map(&:to_math_ml).join if content.kind_of? Array
+
       "<#{tag_name}>#{escape_for_xml content}</#{tag_name}>"
     end
 
