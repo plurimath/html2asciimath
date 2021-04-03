@@ -35,12 +35,14 @@ module HTML2MathML
       ast_stack.last << AstNode.new(label, value)
     end
 
-    def open_group
-      ast_stack.push Array.new
+    def open_group(label)
+      new_subtree = Array.new
+      push_to_ast(label, new_subtree)
+      ast_stack.push new_subtree
     end
 
     def close_group
-      push_to_ast :group, ast_stack.pop
+      ast_stack.pop
     end
 
     class AbstractScanner < StringScanner
@@ -108,7 +110,7 @@ module HTML2MathML
       def on_sub(opening)
         if opening
           # push "_"
-          converter.open_group
+          converter.open_group :subscript
         else
           converter.close_group
         end
@@ -117,7 +119,7 @@ module HTML2MathML
       def on_sup(opening)
         if opening
           # push "^"
-          converter.open_group
+          converter.open_group :superscript
         else
           converter.close_group
         end
