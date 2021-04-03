@@ -31,6 +31,18 @@ module HTML2MathML
       ].join
     end
 
+    def push_to_ast(label, value)
+      ast_stack.last << AstNode.new(label, value)
+    end
+
+    def open_group
+      ast_stack.push Array.new
+    end
+
+    def close_group
+      push_to_ast :group, ast_stack.pop
+    end
+
     class AbstractScanner < StringScanner
       attr_reader :converter
 
@@ -49,17 +61,17 @@ module HTML2MathML
         throw :error
       end
 
-      def push_to_ast(label, value)
-        converter.ast_stack.last << AstNode.new(label, value)
+      def push_to_ast(*args)
+        converter.push_to_ast(*args)
       end
 
-      def open_group
-        converter.ast_stack.push AST.new
-      end
+      # def open_group
+      #   converter.ast_stack.push AST.new
+      # end
 
-      def close_group
-        push_to_ast :group, converter.ast_stack.pop
-      end
+      # def close_group
+      #   push_to_ast :group, converter.ast_stack.pop
+      # end
     end
 
     class HTMLScannerCallbacks < Nokogiri::XML::SAX::Document
@@ -96,18 +108,18 @@ module HTML2MathML
       def on_sub(opening)
         if opening
           # push "_"
-          open_group
+          converter.open_group
         else
-          close_group
+          converter.close_group
         end
       end
 
       def on_sup(opening)
         if opening
           # push "^"
-          open_group
+          converter.open_group
         else
-          close_group
+          converter.close_group
         end
       end
     end
