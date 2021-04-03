@@ -10,18 +10,21 @@ module HTML2MathML
   class AstNode
     module Refinements
       refine Object do
+    # From https://github.com/asciidoctor/asciimath/blob/3a4bbab7da/lib/asciimath/mathml.rb
         def to_math_ml
           itself.to_s.each_codepoint.inject(String.new) do |acc, cp|
-        if cp == 38
-          acc << "&amp;"
-        elsif cp == 60
-          acc << "&lt;"
-        elsif cp == 62
-          acc << "&gt;"
-        elsif cp > 127
-          acc << "&#x#{cp.to_s(16).upcase};"
-        else
-          acc << cp
+            if cp == 38
+              acc << "&amp;"
+            elsif cp == 60
+              acc << "&lt;"
+            elsif cp == 62
+              acc << "&gt;"
+            elsif cp > 127
+              acc << "&#x#{cp.to_s(16).upcase};"
+            else
+              acc << cp
+            end
+          end
         end
       end
     end
@@ -81,9 +84,8 @@ module HTML2MathML
     #   escape_for_xml value
     # end
 
-    # From https://github.com/asciidoctor/asciimath/blob/3a4bbab7da/lib/asciimath/mathml.rb
-    def escape_for_xml(str)
+    # def escape_for_xml(str)
 
-    end
+    # end
   end
 end
