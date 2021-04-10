@@ -2,10 +2,17 @@
 
 # (c) 2021 Ribose Inc.
 
+require "forwardable"
 require "strscan"
 
 module HTML2AsciiMath
   class HTMLTextParser < StringScanner
+    extend Forwardable
+
+    attr_reader :converter
+
+    def_delegators :@converter, :push, :open_group, :close_group, :variable_mode
+
     def initialize(str, converter)
       super(str)
       @converter = converter
@@ -58,7 +65,7 @@ module HTML2AsciiMath
       text = scan(/\p{Letter}+/) or return
       # TODO distinguish variables (which should be left unquoted), regular
       # text (which should be quoted), and textual operators (e.g. sum).
-      push(@variable_mode ? text : %["#{text}"])
+      push(variable_mode ? text : %["#{text}"])
       true
     end
 

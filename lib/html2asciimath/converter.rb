@@ -4,20 +4,20 @@
 
 module HTML2AsciiMath
   class Converter
-    attr_reader :ast, :ast_stack
+    attr_reader :ast, :ast_stack, :html_parser
+    attr_accessor :variable_mode
 
     def initialize(str)
       @ast = AST.new
       @ast_stack = [@ast]
       @variable_mode = false
+      @html_parser = HTMLParser.new(str, self)
     end
 
     def transform
-      # TODO parse
+      html_parser.parse
       to_asciimath
     end
-
-    private
 
     def open_group
       ast_stack.push AST.new

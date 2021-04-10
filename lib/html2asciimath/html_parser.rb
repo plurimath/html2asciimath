@@ -2,10 +2,17 @@
 
 # (c) 2021 Ribose Inc.
 
+require "forwardable"
 require "strscan"
 
 module HTML2AsciiMath
   class HTMLParser < StringScanner
+    extend Forwardable
+
+    attr_reader :converter
+
+    def_delegators :@converter, :push, :open_group, :close_group, :variable_mode=
+
     def initialize(str, converter)
       super(str)
       @converter = converter
@@ -40,7 +47,7 @@ module HTML2AsciiMath
 
     def scan_html_text
       text = scan(/[^<]+/) or return
-      # TODO Process extracted text
+      HTMLTextParser.new(text, converter).parse
       true
     end
 
@@ -55,7 +62,7 @@ module HTML2AsciiMath
     end
 
     def on_i(opening)
-      @variable_mode = opening
+      self.variable_mode = opening
     end
 
     def on_sub(opening)
