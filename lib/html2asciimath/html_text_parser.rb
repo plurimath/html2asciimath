@@ -20,7 +20,7 @@ module HTML2AsciiMath
 
     def parse # rubocop:disable Metrics/CyclomaticComplexity
       repeat_until_error_or_eos do
-        skip_ws or scan_number or scan_symbol or scan_text or scan_error
+        skip_ws or scan_number or scan_text or scan_symbol or scan_error
       end
     end
 
@@ -55,7 +55,8 @@ module HTML2AsciiMath
     end
 
     def scan_symbol
-      str = scan(SYMBOLS_RX) or return
+      # Any character that does not belong to Control category.
+      str = scan(/\p{^C}/) or return
       symb = SYMBOLS[str] || str
       push(symb)
       true
