@@ -8,16 +8,6 @@ RSpec.describe HTML2AsciiMath do
     expect(HTML2AsciiMath::VERSION).not_to be nil
   end
 
-  describe "Greek" do
-    example "&omega;" do
-      expect(translate).to eq("omega")
-    end
-
-    example "&Omega;" do
-      expect(translate).to eq("Omega")
-    end
-  end
-
   describe "numbers" do
     example "1" do
       expect(translate).to eq("1")
@@ -67,10 +57,6 @@ RSpec.describe HTML2AsciiMath do
 
     example "1 + 2" do
       expect(translate).to eq("1 + 2")
-    end
-
-    example "&omega; + &theta;" do
-      expect(translate).to eq("omega + theta")
     end
 
     example "1 - 2" do
@@ -260,6 +246,16 @@ RSpec.describe HTML2AsciiMath do
     example "<i>f</i><sub>max</sub>" do
       expect(translate).to eq('f _ "max"')
     end
+  end
+
+  describe "Greek symbols and text" do
+    example "<i>&omega;</i>" do
+      expect(translate).to eq("ω")
+    end
+
+    example "<i>&Omega;</i>" do
+      expect(translate).to eq("Ω")
+    end
 
     example "αβγ" do
       expect(translate).to eq('"αβγ"')
@@ -270,6 +266,7 @@ RSpec.describe HTML2AsciiMath do
     end
   end
 
+
   # Mixing it all together
 
   example "<i>f</i><sup>-1</sup>(<i>x</x>)" do
@@ -278,8 +275,8 @@ RSpec.describe HTML2AsciiMath do
     expect(translate).to eq("f ^ -1 ( x )")
   end
 
-  example "&Pi;<i>r</i><sup>2</sup>" do
-    expect(translate).to eq("Pi r ^ 2")
+  example "<i>&Pi;</i><i>r</i><sup>2</sup>" do
+    expect(translate).to eq("Π r ^ 2")
   end
 
   example "<i>x</i><sup><i>a</i> + <i>b</i></sup> = <i>x</i><sup><i>a</i></sup> &sdot; <i>x</i><sup><i>b</i></sup>" do
