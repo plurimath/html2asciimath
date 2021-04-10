@@ -70,12 +70,14 @@ module HTML2AsciiMath
 
       def start_element(elem_name, _attrs = [])
         # TODO maintain some elements stack
-        send(ELEMENT_HANDLERS[elem_name], true)
+        handler = ELEMENT_HANDLERS[elem_name]
+        handler && parser.send(handler, true)
       end
 
       def end_element(elem_name)
         # TODO auto-close elements which are above this one in elements stack
-        send(ELEMENT_HANDLERS[elem_name], false)
+        handler = ELEMENT_HANDLERS[elem_name]
+        handler && parser.send(handler, false)
       end
     end
   end
