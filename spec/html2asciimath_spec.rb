@@ -134,7 +134,7 @@ RSpec.describe HTML2AsciiMath do
     end
 
     example "&forall;<i>x</i>" do
-      expect(translate).to eq("VV x")
+      expect(translate).to eq("AA x")
     end
 
     example "&exist;<i>x</i>" do
