@@ -3,63 +3,27 @@
 # (c) 2021 Ribose Inc.
 
 require "forwardable"
-require "strscan"
+require "nokogiri"
 
 module HTML2AsciiMath
-  class HTMLParser < StringScanner
+  class HTMLParser < Nokogiri::HTML::SAX::Parser
     extend Forwardable
 
-    attr_reader :converter
+    attr_reader :converter, :string
 
     def_delegators :@converter, :push, :open_group, :close_group, :variable_mode=
 
     def initialize(str, converter)
-      super(str)
+      super(SAXCallbacks.new(self))
+      @string = str
       @converter = converter
     end
 
-    def parse # rubocop:disable Metrics/CyclomaticComplexity
-      repeat_until_error_or_eos do
-        scan_element or scan_html_text
-      end
+    def parse
+      super(string)
     end
 
     private
-
-    def repeat_until_error_or_eos
-      catch(:error) do
-        yield until eos?
-      end
-    end
-
-    def scan_element
-      str = scan(%r{</?\w+>}) or return
-      opening = str[1] != "/"
-      elem_name = opening ? str[1..-2] : str[2..-2]
-
-      # TODO else unscan and return false
-      if ELEMENT_HANDLERS.key? elem_name
-        opening ? open_element(elem_name) : close_element(elem_name)
-      end
-
-      true
-    end
-
-    def scan_html_text
-      text = scan(/[^<]+/) or return
-      HTMLTextParser.new(text, converter).parse
-      true
-    end
-
-    def open_element(elem_name)
-      # TODO maintain some elements stack
-      send(ELEMENT_HANDLERS[elem_name], true)
-    end
-
-    def close_element(elem_name)
-      # TODO auto-close elements which are above this one in elements stack
-      send(ELEMENT_HANDLERS[elem_name], false)
-    end
 
     def on_i(opening)
       self.variable_mode = opening
@@ -91,5 +55,28 @@ module HTML2AsciiMath
       .map { |h| [h.to_s[3..].freeze, h] }
       .to_h
       .freeze
+
+    class SAXCallbacks < Nokogiri::XML::SAX::Document
+      attr_reader :parser
+
+      def initialize(parser)
+        @parser = parser
+      end
+
+      def characters(text)
+        HTMLTextParser.new(text, parser.converter).parse
+        true
+      end
+
+      def start_element(elem_name, _attrs = [])
+        # TODO maintain some elements stack
+        send(ELEMENT_HANDLERS[elem_name], true)
+      end
+
+      def end_element(elem_name)
+        # TODO auto-close elements which are above this one in elements stack
+        send(ELEMENT_HANDLERS[elem_name], false)
+      end
+    end
   end
 end
