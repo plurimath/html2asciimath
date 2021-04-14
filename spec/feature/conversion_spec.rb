@@ -4,10 +4,6 @@
 
 # rubocop:disable Layout/LineLength
 RSpec.describe HTML2AsciiMath do
-  it "has a version number" do
-    expect(HTML2AsciiMath::VERSION).not_to be nil
-  end
-
   describe "numbers" do
     example "1" do
       expect(translate).to eq("1")
