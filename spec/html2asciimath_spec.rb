@@ -108,6 +108,18 @@ RSpec.describe HTML2AsciiMath do
     example "&not;<i>p</i>" do
       expect(translate).to eq("not p")
     end
+
+    example "<i>p</i>&and;<i>q</i>" do
+      expect(translate).to eq("p and q")
+    end
+
+    example "<i>p</i>&or;<i>q</i>" do
+      expect(translate).to eq("p or q")
+    end
+
+    example "<i>p</i> = <i>p</i>&and;<i>q</i>&or;<i>p</i>&and;&not;<i>q</i>" do
+      expect(translate).to eq("p = p and q or p and not q")
+    end
   end
 
   describe "other symbols" do
