@@ -34,4 +34,5 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = Gem::Requirement.new(">= 2.6.0")
 
   spec.add_runtime_dependency "nokogiri"
+  spec.add_runtime_dependency "unicode_scanner", "~> 1.0"
 end

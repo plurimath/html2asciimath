@@ -3,10 +3,10 @@
 # (c) 2021 Ribose Inc.
 
 require "forwardable"
-require "strscan"
+require "unicode_scanner"
 
 module HTML2AsciiMath
-  class HTMLTextParser < StringScanner
+  class HTMLTextParser < UnicodeScanner
     extend Forwardable
 
     attr_reader :converter
