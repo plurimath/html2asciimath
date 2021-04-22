@@ -5,6 +5,7 @@
 require_relative "html2asciimath/version"
 require_relative "html2asciimath/ast"
 require_relative "html2asciimath/converter"
+require_relative "html2asciimath/detector"
 require_relative "html2asciimath/html_parser"
 require_relative "html2asciimath/html_text_parser"
 
@@ -17,5 +18,9 @@ module HTML2AsciiMath
     Converter.new(str).transform
   end
 
-  module_function :convert
+  def html_replace(input, &block)
+    Detector.new(input).replace(&block)
+  end
+
+  module_function :convert, :html_replace
 end
