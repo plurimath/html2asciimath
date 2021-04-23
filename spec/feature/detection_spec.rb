@@ -17,6 +17,9 @@ RSpec.describe "math detection" do
   end
 
   example do
+    pending "Would be nice to these, but matching such a simple expressions " +
+      "would result with plenty of false positives."
+
     from = <<~HERE
       This is a text which includes some 1 + 2 = 3 equation.
     HERE

@@ -11,7 +11,84 @@ module HTML2AsciiMath
     end
 
     def replace(&block)
-      # TODO
+      scan_for_math do |math_start, math_end, score|
+        range = (math_start...math_end)
+        source_math = string[range]
+        target_math = yield source_math
+        string[range] = target_math
+        self.pos += (target_math.size - source_math.size)
+      end
+      string
+    end
+
+    private
+
+    def scan_for_math
+      fast_forward_inline_whitespace
+
+      until eos? do
+        assess_candidate
+        yield [@start, @end, @score] if good_score?
+        fast_forward_to_next_candidate
+      end
+    end
+
+    def assess_candidate
+      init_candidate
+      nil while match_candidate_fragment
+    end
+
+    def match_candidate_fragment
+      fast_forward_inline_whitespace
+
+      case
+      when scan(FRAGMENT_WORD_AND_BRACKETS)
+        score_sure
+      when scan(FRAGMENT_SUB_OR_SUP)
+        score_almost_sure
+      when scan(FRAGMENT_B_OR_I)
+        single_char_or_entity?(self[:inner]) ? score_sure : score_maybe
+      when scan(FRAGMENT_OTHER)
+        score_maybe
+      end
+
+      matched?
+    end
+
+    def fast_forward_inline_whitespace
+      skip(/\p{Zs}*/)
+    end
+
+    def fast_forward_to_next_candidate
+      skip(/(?>\p{L}+|.)[[:space:]]*/m)
+    end
+
+    def init_candidate
+      @score = 0
+      @start = pos
+    end
+
+    def score_sure
+      @score += GOOD_SCORE_THRESHOLD
+      @end = pos
+    end
+
+    def score_almost_sure
+      @score += GOOD_SCORE_THRESHOLD - 1
+      @end = pos
+    end
+
+    def score_maybe
+      @score += 1
+      @end = pos
+    end
+
+    def good_score?
+      @score >= GOOD_SCORE_THRESHOLD
+    end
+
+    def single_char_or_entity?(str)
+      str.match? /\A(\S|#{RX_ENTITY})\Z/o
     end
 
     # HTML entity
@@ -48,5 +125,7 @@ module HTML2AsciiMath
       # some ASCII characters used as operators which do not belong to Sm
       [-/()]
     }xo
+
+    GOOD_SCORE_THRESHOLD = 11
   end
 end
