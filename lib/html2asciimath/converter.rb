@@ -19,14 +19,10 @@ module HTML2AsciiMath
     attr_accessor :variable_mode
 
     def initialize(str)
-      @ast = AST.new
-      @ast_stack = [@ast]
-      @variable_mode = false
       @html_parser = HTMLParser.new(str, self)
     end
 
     def transform
-      html_parser.parse
       to_asciimath
     end
 
@@ -43,7 +39,17 @@ module HTML2AsciiMath
     end
 
     def to_asciimath
+      parse
       ast.to_asciimath
+    end
+
+    def parse
+      return if @ast
+
+      @ast = AST.new
+      @ast_stack = [@ast]
+      @variable_mode = false
+      html_parser.parse
     end
   end
 end
