@@ -1,3 +1,5 @@
+## DEPRECATION NOTICE: This repository is no longer maintained. Please visit [Plurimath](https://github.com/plurimath/plurimath) for the latest updates and features.
+
 # HTML2AsciiMath
 
 Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/html2asciimath`. To experiment with that code, run `bin/console` for an interactive prompt.
